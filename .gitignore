@@ -1,0 +1,24 @@
+node_modules
+dist
+coverage
+*.local
+.DS_Store
+*.log
+.vite
+playwright-report
+test-results
+__pycache__/
+*.pyc
+design-system/
+
+# Secrets / environment files
+.env
+.env.*
+!.env.example
+
+# Agent tooling and local-only artifacts
+.opencode/
+.audit/
+reports/
+b64test.js
+test_dir.txt

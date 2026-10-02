@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; height: 100%; font: 12px monospace; }
+  iframe { width: 100vw; height: 80vh; border: 0; }
+  #out { padding: 8px; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<iframe id="f" src="/"></iframe>
+<div id="out">measuring...</div>
+<script>
+  const f = document.getElementById('f');
+  f.addEventListener('load', () => {
+    setTimeout(() => {
+      const doc = f.contentDocument;
+      const vw = doc.documentElement.clientWidth;
+      const bad = [];
+      let maxW = 0;
+      doc.querySelectorAll('*').forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.width > maxW) maxW = r.width;
+        if (r.width > 390) {
+          bad.push(
+            el.tagName.toLowerCase() +
+            (el.className && typeof el.className === 'string' ? '.' + el.className.split(' ').join('.') : '') +
+            ' w=' + Math.round(r.width)
+          );
+        }
+      });
+      document.getElementById('out').textContent =
+        'viewport=' + vw + ' maxElem=' + Math.round(maxW) + '\n' +
+        (bad.slice(0, 25).join('\n') || 'all elements <= 390px');
+    }, 1500);
+  });
+</script>
+</body>
+</html>
