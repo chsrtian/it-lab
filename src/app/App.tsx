@@ -1,10 +1,12 @@
 import { Suspense, lazy, useEffect, useMemo } from "react";
 import { NavLink, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { useProgressStore } from "@/store/progress";
+import { useAuthStore } from "@/store/auth";
 import { getScenarios } from "@/content";
 import { BenchMark } from "@/components/BenchMark";
 import { LandingPage } from "@/pages/LandingPage";
-import { AuthPlaceholderPage } from "@/pages/AuthPlaceholderPage";
+import { AuthPage } from "@/pages/AuthPage";
+import { AuthCallbackPage } from "@/pages/AuthCallbackPage";
 import { HomePage } from "@/pages/HomePage";
 import { CatalogPage } from "@/pages/CatalogPage";
 import { KbPage } from "@/pages/KbPage";
@@ -24,7 +26,7 @@ const ScenarioPage = lazy(() =>
 /**
  * Product shell: two graphite steel rails clamping the bench floor. The
  * active section is marked with `aria-current`, a lifted background and a
- * signal rule — never colour alone. The landing page and auth placeholder
+ * signal rule — never colour alone. The landing page and auth pages
  * render outside this shell; every workbench section runs under it.
  */
 const nav = [
@@ -43,6 +45,8 @@ function Shell() {
     (s) => s.profile?.completedScenarioIds.length ?? 0,
   );
   const total = useMemo(() => getScenarios().length, []);
+  const authStatus = useAuthStore((s) => s.status);
+  const signOut = useAuthStore((s) => s.signOut);
   // Simulation workspace: break out of the content column so the environment
   // gets the full viewport width (scenario-first composition).
   const isWorkspace = pathname.startsWith("/lab/");
@@ -80,6 +84,22 @@ function Shell() {
             </span>
             <span className="rail-readout-val">{xp} XP</span>
           </div>
+
+          <div className="rail-auth">
+            {authStatus === "signedIn" ? (
+              <button
+                type="button"
+                className="btn-quiet"
+                onClick={() => void signOut()}
+              >
+                Sign out
+              </button>
+            ) : (
+              <NavLink to="/auth" className="btn-quiet">
+                Sign in
+              </NavLink>
+            )}
+          </div>
         </div>
       </header>
 
@@ -104,16 +124,21 @@ function Shell() {
 
 export default function App() {
   const hydrate = useProgressStore((s) => s.hydrate);
+  const initAuth = useAuthStore((s) => s.initialize);
 
   useEffect(() => {
     void hydrate();
   }, [hydrate]);
 
+  useEffect(() => {
+    void initAuth();
+  }, [initAuth]);
+
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
-      <Route path="/auth" element={<AuthPlaceholderPage />} />
-      <Route path="/auth/callback" element={<AuthPlaceholderPage />} />
+      <Route path="/auth" element={<AuthPage />} />
+      <Route path="/auth/callback" element={<AuthCallbackPage />} />
       <Route element={<Shell />}>
         <Route path="/workbench" element={<HomePage />} />
         <Route path="/labs" element={<CatalogPage />} />

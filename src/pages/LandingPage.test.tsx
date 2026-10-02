@@ -13,7 +13,6 @@ const landingSources = [
   "src/pages/landing/landingData.ts",
   "src/pages/landing/motion.tsx",
   "src/pages/landing/BootTranscript.tsx",
-  "src/pages/AuthPlaceholderPage.tsx",
 ].map((p) => readFileSync(p, "utf8"));
 
 function renderLanding() {

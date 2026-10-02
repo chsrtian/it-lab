@@ -4328,6 +4328,11 @@
     font-variant-numeric: tabular-nums;
     color: var(--color-steel-text);
   }
+  .rail-auth {
+    display: flex;
+    align-items: center;
+    margin-left: 0.8rem;
+  }
 
   .skip-link {
     position: fixed;
@@ -7479,6 +7484,42 @@
   .lp-auth-card p {
     margin: 0;
     color: var(--color-muted);
+  }
+  .lp-auth-tabs {
+    display: inline-flex;
+    width: fit-content;
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-sm);
+  }
+  .lp-auth-tab {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.45rem 0.9rem;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    color: var(--color-muted);
+  }
+  .lp-auth-tab[aria-pressed="true"] {
+    background: var(--color-surface-2);
+    color: var(--color-ink);
+  }
+  .lp-auth-error {
+    margin: 0;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-fault);
+    border-radius: var(--radius-sm);
+    color: var(--color-fault);
+    font-size: 0.875rem;
+  }
+  .lp-auth-note {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-faint);
   }
 
   /* ---------------------------------------------------------------- */

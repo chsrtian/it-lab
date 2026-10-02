@@ -12,8 +12,10 @@ describe("phase 15 structure — route split + landing stylesheet", () => {
   it("splits routes: bare landing/auth, shell layout for the workbench", () => {
     expect(appSource).toContain('path="/" element={<LandingPage />}');
     expect(appSource).toContain('path="/workbench" element={<HomePage />}');
-    expect(appSource).toContain('path="/auth" element={<AuthPlaceholderPage />}');
-    expect(appSource).toContain('path="/auth/callback" element={<AuthPlaceholderPage />}');
+    expect(appSource).toContain('path="/auth" element={<AuthPage />}');
+    expect(appSource).toContain(
+      'path="/auth/callback" element={<AuthCallbackPage />}',
+    );
     expect(appSource).toContain("element={<Shell />}");
     // Shell renders an outlet, not page children.
     expect(appSource).toContain("<Outlet />");

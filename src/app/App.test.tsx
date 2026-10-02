@@ -57,13 +57,19 @@ describe("route split — front door vs. workbench", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders the auth placeholder at /auth and /auth/callback", () => {
+  it("renders the auth page at /auth", async () => {
     renderAt("/auth");
     expect(
-      screen.getByRole("heading", { level: 1, name: "Sign in" }),
+      await screen.findByRole("heading", { level: 1, name: "Sign in" }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/arrives with the Supabase integration/i)).toBeInTheDocument();
     expect(document.querySelector(".steel-rail")).toBeNull();
+  });
+
+  it("renders the auth callback page at /auth/callback", async () => {
+    renderAt("/auth/callback");
+    expect(
+      await screen.findAllByText(/not configured/i),
+    ).not.toHaveLength(0);
   });
 
   it("renders the 404 inside the shell and routes back to the workbench", () => {
